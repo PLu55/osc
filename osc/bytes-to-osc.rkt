@@ -100,6 +100,10 @@
   (match char
     [115 ;; s
      (parse-string-from bytes offset)]
+    [104 ;; h
+     (values (integer-bytes->integer bytes #t #t
+                                     offset (+ offset 8))
+             (+ offset 8))]
     [105 ;; i
      (values (integer-bytes->integer bytes #t #t
                                      offset (+ offset 4))

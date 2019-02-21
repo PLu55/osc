@@ -1,0 +1,15 @@
+*** bytes-to-osc.rkt	2019-02-21 13:25:52.255739492 +0100
+--- /home/plu/.racket/6.12/pkgs/osc/osc/bytes-to-osc.rkt	2019-02-21 10:07:09.024458726 +0100
+***************
+*** 100,105 ****
+--- 100,109 ----
+    (match char
+      [115 ;; s
+       (parse-string-from bytes offset)]
++     [104 ;; h
++      (values (integer-bytes->integer bytes #t #t
++                                      offset (+ offset 8))
++              (+ offset 8))]
+      [105 ;; i
+       (values (integer-bytes->integer bytes #t #t
+                                       offset (+ offset 4))
