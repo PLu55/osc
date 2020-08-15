@@ -1,15 +1,29 @@
-*** bytes-to-osc.rkt	2019-02-21 13:25:52.255739492 +0100
---- /home/plu/.racket/6.12/pkgs/osc/osc/bytes-to-osc.rkt	2019-02-21 10:07:09.024458726 +0100
-***************
-*** 100,105 ****
---- 100,109 ----
-    (match char
-      [115 ;; s
-       (parse-string-from bytes offset)]
-+     [104 ;; h
-+      (values (integer-bytes->integer bytes #t #t
-+                                      offset (+ offset 8))
-+              (+ offset 8))]
-      [105 ;; i
-       (values (integer-bytes->integer bytes #t #t
-                                       offset (+ offset 4))
+--- bytes-to-osc.rkt.orig	2020-05-03 20:56:36.000000000 +0200
++++ bytes-to-osc.rkt	2020-08-15 11:55:48.000000000 +0200
+@@ -100,10 +100,14 @@
+   (match char
+     [115 ;; s
+      (parse-string-from bytes offset)]
+-    [105 ;; i
++    [105 ;; i i32
+      (values (integer-bytes->integer bytes #t #t
+                                      offset (+ offset 4))
+              (+ offset 4))]
++    [104 ;; h i64
++     (values (integer-bytes->integer bytes #t #t
++                                     offset (+ offset 8))
++             (+ offset 8))]
+     [102 ;; f
+      (values (floating-point-bytes->real
+               bytes #t offset (+ offset 4))
+@@ -121,6 +125,10 @@
+                             (+ offset 4 len)))
+      (values (list 'blob bstr) (round-up-to-4
+                                 (+ offset 4 len)))]
++    [70 ;; F, false
++     (values #f offset)]
++    [84 ;; T, true
++     (values #t offset)]
+     
+     [other
+      (error 'read-arg-of-type

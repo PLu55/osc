@@ -1,0 +1,22 @@
+--- osc-defns.rkt.orig	2020-08-15 13:24:16.926098576 +0200
++++ osc-defns.rkt	2020-08-15 11:43:53.000000000 +0200
+@@ -54,6 +54,7 @@
+       (osc-char? v) ; (list 'c byte)
+       (osc-color? v) ; (list 'r <4bytes>)
+       (osc-midi? v) ; (list 'm <4bytes>)
++      (osc-boolean? v)
+       (boolean? v) ; boolean?
+       (null? v) 
+       (osc-inf? v) ; 'infinitum
+@@ -82,6 +83,11 @@
+   (and (number? f)
+        (inexact-real? f)))
+ 
++(define (osc-boolean? f)
++  (match f
++    [(list 'F (? boolean? b)) #t]
++    [other #f]))
++
+ (define (osc-double? f)
+   (match f
+     [(list 'd (? inexact-real? f)) #t]

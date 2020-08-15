@@ -54,7 +54,6 @@
       (osc-char? v) ; (list 'c byte)
       (osc-color? v) ; (list 'r <4bytes>)
       (osc-midi? v) ; (list 'm <4bytes>)
-      (osc-boolean? v)
       (boolean? v) ; boolean?
       (null? v) 
       (osc-inf? v) ; 'infinitum
@@ -82,11 +81,6 @@
 (define (float32? f)
   (and (number? f)
        (inexact-real? f)))
-
-(define (osc-boolean? f)
-  (match f
-    [(list 'F (? boolean? b)) #t]
-    [other #f]))
 
 (define (osc-double? f)
   (match f
